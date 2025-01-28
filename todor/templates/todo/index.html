@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="container-fluid">
+    <nav class="navbar mb-4">
+        <h1>{% block title %}Lista de tareas{% endblock %}</h1>
+        <a href="{{ url_for('todo.create') }}" class="btn btn-success">
+            <i class="fa-solid fa-plus-circle"></i> Nueva Tarea
+        </a>
+        
+    </nav>
+
+    <table class="table table-hover">
+        <thead class="table">
+            <tr>
+                <th class="col">Tareas</th>
+                <th class="col text-center px-2">Estado</th> 
+                <th class="col text-center px-2" colspan="2">Opciones</th> 
+            </tr>
+        </thead>
+        <tbody>
+            {% for todo in todos.items %}
+            <tr>
+                <td style="max-width: 300px; word-wrap: break-word;">
+                    <h5 class="mb-1">{{ todo.title }}</h5>
+                    <p class="text-muted small">{{ todo.desc }}</p>
+                </td>
+                <td class="text-center px-2">
+                    {% if not todo.state %}
+                    <span class="badge bg-warning text-dark">
+                        <i class="fa-solid fa-times-circle"></i> Incompleto
+                    </span>
+                    {% else %}
+                    <span class="badge bg-success">
+                        <i class="fa-solid fa-check-circle"></i> Completado
+                    </span>
+                    {% endif %}
+                </td>
+                <td class="text-center px-2">  
+                    <div class="d-flex gap-2 justify-content-center">
+                        <a href="{{ url_for('todo.update', id=todo.id) }}" class="btn btn-sm btn-primary">
+                                <i class="fa-solid fa-pen"></i> Editar
+                            </a>
+                            
+                        </a>
+                        <a href="{{ url_for('todo.delete', id=todo.id) }}" class="btn btn-sm btn-danger">
+                            <i class="fa-solid fa-trash-can"></i> Eliminar
+                        </a>
+                        
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <nav aria-label="Paginación de tareas" class="mt-4">
+        <ul class="pagination justify-content">
+            {% if todos.has_prev %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('todo.index', page=todos.prev_num) }}" aria-label="Anterior">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">&laquo;</span>
+            </li>
+            {% endif %}
+
+            {% for page_num in range(1, todos.pages + 1) %}
+            <li class="page-item {% if page_num == todos.page %}active{% endif %}">
+                <a class="page-link" href="{{ url_for('todo.index', page=page_num) }}">{{ page_num }}</a>
+            </li>
+            {% endfor %}
+
+            {% if todos.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('todo.index', page=todos.next_num) }}" aria-label="Siguiente">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">&raquo;</span>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+</section>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h3 class="text-center mt-3 mb-3">{% block title %}Editar Tarea{% endblock %}</h3>
+
+            <form action="" method="post" class="needs-validation" novalidate>
+                <!-- Título -->
+                <div class="form-group mb-3">
+                    <label for="title" class="form-label">Título de la Tarea</label>
+                    <input type="text" class="form-control form-control-sm" id="title" name="title" placeholder="Ingrese el título de la tarea" required value="{{ todo.title }}">
+                    <div class="invalid-feedback">
+                        Por favor, ingrese un título válido.
+                    </div>
+                </div>
+
+                <!-- Descripción -->
+                <div class="form-group mb-3">
+                    <label for="desc" class="form-label">Descripción</label>
+                    <textarea class="form-control form-control-sm" id="desc" name="desc" rows="3" placeholder="Ingrese una breve descripción de la tarea">{{ todo.desc }}</textarea>
+                    <div class="invalid-feedback">
+                        La descripción no puede estar vacía.
+                    </div>
+                </div>
+
+                <!-- Completado -->
+                <div class="form-group mb-3">
+                    <label for="state" class="form-label">Completado</label>
+                    <input class="form-check-input" type="checkbox" name="state" id="state" {% if todo.state == true %} checked {% endif %}>
+                </div>
+
+                <!-- Botones centrados -->
+                <div class="text-center mt-3">
+                    <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
+                    <a href="{{ url_for('todo.index') }}" class="btn btn-secondary btn-sm">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
